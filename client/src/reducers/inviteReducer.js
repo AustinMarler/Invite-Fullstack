@@ -1,5 +1,7 @@
 const initialState = {
-  personData: {}
+  personData: {},
+  going: [],
+  notGoing: []
 }
 
 export default function (state = initialState, action) {
@@ -13,6 +15,16 @@ export default function (state = initialState, action) {
         email: action.data.results[0].email,
         picture: action.data.results[0].picture.large
       }}
+    case "GET_GOING":
+      return {
+        ...state,
+        going: action.payload
+      }
+    case "GET_NOT_GOING":
+      return {
+        ...state,
+        notGoing: action.payload
+      }
     default:
       return state
   }

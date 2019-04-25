@@ -1,9 +1,33 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getPersonData } from '../actions/actions';
+import { getPersonData, going, notGoing, getGoing, getNotGoing } from '../actions/actions';
 
 class Invite extends Component {
   componentDidMount() {
+    getPersonData()
+    getGoing()
+    getNotGoing()
+  }
+
+  personGoing = (e) => {
+    e.preventDefault()
+    going({
+      picture: this.props.picture,
+      name: this.props.name,
+      email: this.props.email,
+      phone: this.props.phone
+    })
+    getPersonData()
+  }
+
+  personNotGoing = (e) => {
+    e.preventDefault()
+    notGoing({
+      picture: this.props.picture,
+      name: this.props.name,
+      email: this.props.email,
+      phone: this.props.phone
+    })
     getPersonData()
   }
 
@@ -12,8 +36,8 @@ class Invite extends Component {
       <div id="mainInviteContainer">
         <div id="innerInviteContainer">
           <div id="goingOrNotContainer">
-            <span>Going: #</span>
-            <span>Not Going: #</span>
+            <span>Going: {this.props.goingCount}</span>
+            <span>Not Going: {this.props.notGoingCount}</span>
           </div>
           <div id="personPicContainer" className="grayBG">
             <img alt="" src={this.props.picture} />
@@ -24,8 +48,8 @@ class Invite extends Component {
             <span className="personInfo"><span className="bold">Email:</span> {this.props.email}</span>
           </div>
           <div id="yesOrNoContainer" className="grayBG">
-            <button type="button" id="isGoingButton">&#10003;</button>
-            <button type="button" id="isNotGoingButton">&#10007;</button>
+            <button onClick={this.personGoing} type="button" id="isGoingButton">&#10003;</button>
+            <button onClick={this.personNotGoing} type="button" id="isNotGoingButton">&#10007;</button>
           </div>
         </div>
       </div>
@@ -38,7 +62,9 @@ function mapStateToProps(appState) {
     name: appState.personData.name,
     phone: appState.personData.phone,
     email: appState.personData.email,
-    picture: appState.personData.picture
+    picture: appState.personData.picture,
+    goingCount: appState.going.length,
+    notGoingCount: appState.notGoing.length
   }
 }
 
